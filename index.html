@@ -165,5 +165,13 @@ function mostrarCarta(carta) {
 
 </script>
 
+    
+    //service Worker para instalar como app
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("sw.js");
+}
+</script>
+
 </body>
 </html>
