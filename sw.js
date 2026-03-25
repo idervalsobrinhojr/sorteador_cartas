@@ -55,3 +55,19 @@ self.addEventListener("fetch", event => {
       .then(response => response || fetch(event.request))
   );
 });
+
+self.addEventListener("activate", event => {
+  const cacheWhitelist = ["baralho-v2"];
+
+  event.waitUntil(
+    caches.keys().then(cacheNames => {
+      return Promise.all(
+        cacheNames.map(cache => {
+          if (!cacheWhitelist.includes(cache)) {
+            return caches.delete(cache);
+          }
+        })
+      );
+    })
+  );
+});
