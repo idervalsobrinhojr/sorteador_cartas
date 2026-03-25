@@ -2,43 +2,105 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Baralho de Imagens</title>
+<title>Baralho de Cartas</title>
 
-    <!-- Ícone -->
-    <link rel="icon" href="icon-192.png">
-
-    <!-- Manifest (PWA) -->
-     <link rel="manifest" href="manifest.json">
-     <meta name="theme-color" content="#ffffff">
+<link rel="icon" href="icon-192.png">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1b4332">
 
 <style>
   body {
-    font-family: Arial;
+    font-family: 'Trebuchet MS', sans-serif;
     text-align: center;
     padding: 20px;
+    margin: 0;
+
+    background: radial-gradient(circle at center, #d8f3dc 0%, #40916c 40%, #1b4332 100%);
+    min-height: 100vh;
+    color: #fff;
   }
 
+  h1 {
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 6px rgba(0,0,0,0.6);
+  }
+
+  /* BOTÕES RPG */
   button {
-    margin: 10px;
-    padding: 10px 15px;
-    font-size: 16px;
+    margin: 8px;
+    padding: 12px 18px;
+    font-size: 15px;
     cursor: pointer;
+
+    border: 2px solid #081c15;
+    border-radius: 14px;
+
+    background: linear-gradient(to bottom, #52b788, #2d6a4f);
+    color: #fff;
+
+    box-shadow:
+      0 6px #1b4332,
+      0 8px 14px rgba(0,0,0,0.5);
+
+    transition: all 0.15s ease;
+  }
+
+  button:active {
+    transform: translateY(4px);
+    box-shadow:
+      0 2px #1b4332,
+      0 4px 6px rgba(0,0,0,0.5);
   }
 
   .area-cartas {
-    margin-top: 20px;
+    margin-top: 25px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
   }
 
   .carta {
-    margin: 10px;
+    margin: 12px;
+    text-align: center;
+    animation: surgir 0.5s ease;
+  }
+
+  /* ANIMAÇÃO DE COMPRA */
+  @keyframes surgir {
+    from {
+      transform: translateY(-40px) scale(0.8);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
   }
 
   img {
-    max-width: 400px;
-    border-radius: 8px;
+    width: 140px;
+    border-radius: 12px;
+
+    box-shadow:
+      0 12px 18px rgba(0,0,0,0.6),
+      0 6px 8px rgba(0,0,0,0.4);
+
+    border: 2px solid rgba(255,255,255,0.2);
+
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  img:hover {
+    transform: scale(1.08);
+    box-shadow:
+      0 16px 22px rgba(0,0,0,0.7),
+      0 8px 12px rgba(0,0,0,0.5);
+  }
+
+  .carta p {
+    margin-bottom: 6px;
+    font-weight: bold;
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.8);
   }
 </style>
 </head>
@@ -56,8 +118,7 @@
 <script>
 
 //////////////////////////////////////////////////////////////
-// 🔴 BANCO DE DADOS (JSON EMBUTIDO)
-// 👉 EDITE AQUI para adicionar/remover imagens
+// 🔴 BANCO DE DADOS (EDITE AQUI)
 //////////////////////////////////////////////////////////////
 const bancoOriginal = [
   { nome: "Carta 1", arquivo: "imagens/carta01.png" },
@@ -99,16 +160,11 @@ const bancoOriginal = [
 ];
 //////////////////////////////////////////////////////////////
 
-
-// Estado do sistema
 let deck = [];
 let cartasRetiradas = [];
 
-// Inicialização
 resetarDeck();
 
-
-// 🔀 Embaralhar (Fisher-Yates)
 function embaralhar(array) {
   for (let i = array.length - 1; i > 0; i--) {
     let j = Math.floor(Math.random() * (i + 1));
@@ -116,39 +172,29 @@ function embaralhar(array) {
   }
 }
 
-
-// 🎴 Retirar carta (sem reposição)
 function retirarCarta() {
   if (deck.length === 0) {
     alert("Todas as cartas já foram retiradas!");
     return;
   }
 
-  const carta = deck.pop(); // pega do topo
+  const carta = deck.pop();
   cartasRetiradas.push(carta);
 
   mostrarCarta(carta);
 }
 
-
-// 🔀 Embaralhar apenas o deck restante
 function embaralharDeck() {
   embaralhar(deck);
 }
 
-
-// ♻️ Recolher tudo + embaralhar
 function resetarDeck() {
-  deck = [...bancoOriginal]; // recria o deck completo
+  deck = [...bancoOriginal];
   cartasRetiradas = [];
-
   embaralhar(deck);
-
   document.getElementById("mesa").innerHTML = "";
 }
 
-
-// 🖼️ Mostrar carta na tela
 function mostrarCarta(carta) {
   const mesa = document.getElementById("mesa");
 
@@ -165,7 +211,6 @@ function mostrarCarta(carta) {
 
 </script>
 
-    <!-- service Worker para instalar como APP -->
 <script>
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("sw.js");
