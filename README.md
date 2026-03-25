@@ -7,3 +7,12 @@ Para criar um novo deck basta mudar as linhas abaixo (BANCO DE DADOS [JSON EMBUT
 const bancoOriginal = [
   { nome: "Carta X", arquivo: "imagens/suaImagem.png" }
 ];
+
+
+Alterando o tamanho das cartas
+
+Altere o CSS na linha:
+img {
+  max-width: 150px;
+
+  
